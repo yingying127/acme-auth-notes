@@ -20,7 +20,7 @@ class App extends React.Component{
       return (
         <Switch>
           <Route path='/signin' component={ SignIn } />
-          <Redirect to='/signin' />
+          <Route path='/' component={ SignIn }/>
         </Switch>
       );
     }
