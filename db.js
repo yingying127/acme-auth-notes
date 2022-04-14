@@ -9,12 +9,16 @@ const config = {
 if(process.env.LOGGING){
   delete config.logging;
 }
-const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/acme_db', config);
+const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/acme_auth_db', config);
 
 const User = conn.define('user', {
   username: STRING,
   password: STRING
 });
+
+const Note = conn.define('note', {
+  text: STRING
+})
 
 User.addHook('beforeSave', async(user)=> {
   if(user.changed('password')){
@@ -59,8 +63,12 @@ User.authenticate = async({ username, password })=> {
   throw error;
 };
 
+Note.belongsTo(User)
+User.hasMany(Note)
+
 const syncAndSeed = async()=> {
   await conn.sync({ force: true });
+
   const credentials = [
     { username: 'lucy', password: 'lucy_pw'},
     { username: 'moe', password: 'moe_pw'},
@@ -69,6 +77,16 @@ const syncAndSeed = async()=> {
   const [lucy, moe, larry] = await Promise.all(
     credentials.map( credential => User.create(credential))
   );
+
+  await Promise.all([
+    Note.create({ text: 'Walk the dogs', userId: lucy.id}),
+    Note.create({ text: 'Feed the dogs', userId: lucy.id}),
+    Note.create({ text: 'Wash the dogs', userId: lucy.id}),
+    Note.create({ text: 'Do laundry', userId: moe.id}),
+    Note.create({ text: 'Finish homework', userId: larry.id}),
+    Note.create({ text: 'Finish chores', userId: larry.id})
+  ])
+
   return {
     users: {
       lucy,
@@ -81,6 +99,7 @@ const syncAndSeed = async()=> {
 module.exports = {
   syncAndSeed,
   models: {
-    User
+    User,
+    Note
   }
 };
