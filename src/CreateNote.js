@@ -14,6 +14,8 @@ class CreateNote extends Component {
     handleSubmit(ev) {
         ev.preventDefault()
         this.props.addNotes({ text: this.state.text })
+        this.setState({ text: '' })
+        //^ this gets rid of the previous input form after clicking the button
     }
     handleChange(ev) {
         this.setState({
@@ -26,8 +28,8 @@ class CreateNote extends Component {
         return (
             <div>
                 <form onSubmit={ handleSubmit }>
-                    <label htmlFor='text'>New Tasks:</label>
-                    <input onChange={ handleChange } name='text' value={text} />
+                    <label htmlFor='text'>Add New Tasks:</label>
+                    <input onChange={ handleChange } name='text' placeholder='*' value={text} />
 
                     <button disabled={ !text }>Add to Notes</button>
                 </form>

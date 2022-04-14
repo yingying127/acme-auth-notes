@@ -9,7 +9,7 @@ const Home = ({ auth, logout, notes, setNotes })=> {
   }, [])
 
   return (
-    <div>
+    <div id='welcome'>
       Welcome { auth.username }
       <button onClick={ logout }>Logout</button>
       <div>
