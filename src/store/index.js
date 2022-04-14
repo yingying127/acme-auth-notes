@@ -47,16 +47,18 @@ const attemptLogin = ()=> {
   }
 }
 
-const setNote = () => {
+const setNotes = () => {
   return async(dispatch) => {
     const token = window.localStorage.getItem('token');
     if (token) {
-      const response = await axios.get('/api/notes', {
-        headers: {
-          authorization: token
-        }
-      });
-      dispatch({ type: 'SET_NOTES', auth: response.data })
+      const notes = (
+        await axios.get('/api/notes', {
+          headers: {
+            authorization: token
+          }
+        })
+      ).data;
+      dispatch({ type: 'SET_NOTES', notes })
     }
   }
 }
@@ -69,6 +71,6 @@ const store = createStore(
   applyMiddleware(thunk, logger)
 );
 
-export { attemptLogin, signIn, logout, setNote };
+export { attemptLogin, signIn, logout, setNotes };
 
 export default store;

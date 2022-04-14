@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { attemptLogin, logout } from './store';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -20,7 +19,7 @@ class App extends React.Component{
       return (
         <Switch>
           <Route path='/signin' component={ SignIn } />
-          <Route path='/' component={ SignIn }/>
+          <Route path='/' component={ SignIn }/>        
         </Switch>
       );
     }
