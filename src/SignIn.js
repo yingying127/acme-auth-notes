@@ -36,9 +36,12 @@ class SignIn extends React.Component{
     return (
       <form onSubmit={ onSubmit }>
         { error }
+        <label id='login'htmlFor='username'>Username:</label>
         <input value={ username } onChange={ onChange } name='username'/>
+
+        <label id='login' htmlFor='password'>Password:</label>
         <input value={ password } onChange={ onChange } name='password'/>
-        <button>Sign In</button>
+        <button disabled={ !username || !password }>Sign In</button>
       </form>
     );
   }
