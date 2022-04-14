@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Route } from 'react-router-dom';
-import { setNotes } from './store/index';
+import { setNotes, deleteNotes } from './store/index';
 import CreateNote from './CreateNote';
 
-const Notes = ({ auth, notes, setNotes })=> {
-  setNotes();
-
+const Notes = ({ auth, notes, setNotes, deleteNotes })=> {
   return (
     <div>
       <Link to='/home'>Home</Link>
@@ -15,9 +13,10 @@ const Notes = ({ auth, notes, setNotes })=> {
         {
           notes.map(note => {
             return (
-              <li key={note.id}>
-                {note.text}
-              </li>
+                <li key={note.id}>
+                  {note.text}
+                  <button onClick={() => deleteNotes(note.id)}>x</button>
+                </li>
             )
           })
         }
@@ -29,7 +28,8 @@ const Notes = ({ auth, notes, setNotes })=> {
 
 const mapDispatch = (dispatch) => {
   return {
-    setNotes: () => dispatch(setNotes())
+    setNotes: async() => await dispatch(setNotes()),
+    deleteNotes: async(notes) => await dispatch(deleteNotes(notes))
   }
 }
 

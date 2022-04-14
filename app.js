@@ -3,7 +3,6 @@ const app = express();
 app.use(express.json());
 const { models: { User, Note }} = require('./db');
 const path = require('path');
-const { normalize } = require('path');
 
 app.use('/dist', express.static(path.join(__dirname, 'dist')));
 
