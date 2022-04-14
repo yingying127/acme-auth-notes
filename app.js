@@ -52,6 +52,31 @@ app.get('/api/notes', async(req, res, next) => {
   }
 })
 
+app.post('/api/notes', async(req, res, next) => {
+  try {
+    const user = await User.byToken(req.headers.authorization);
+    const note = await Note.create({ text: req.body.text, userId: user.id })
+    res.send(note)
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
+app.delete('/api/notes', async(req, res, next) => {
+  try {
+    const user = await User.byToken(req.headers.authorization);
+    if (user) {
+      const note = await Note.findByPk(req.headers.id)
+      await note.destroy()
+      res.sendStatus(204)
+    }
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
 app.use((err, req, res, next)=> {
   console.log(err);
   res.status(err.status || 500).send({ error: err.message });

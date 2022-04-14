@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { setNotes } from './store/index';
+import CreateNote from './CreateNote';
 
 const Notes = ({ auth, notes, setNotes })=> {
   setNotes();
@@ -21,6 +22,7 @@ const Notes = ({ auth, notes, setNotes })=> {
           })
         }
       </div>
+      <Route component={ CreateNote } />
     </div>
   );
 };
